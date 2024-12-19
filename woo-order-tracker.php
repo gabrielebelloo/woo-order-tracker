@@ -40,62 +40,28 @@ if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
   require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 }
 
-use Src\Activate;
-use Src\Deactivate;
+define( 'PLUGIN', plugin_basename( __FILE__ ) );
+define( 'PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-class WooOrderTrackerPlugin {
+use Src\Base\Activate;
+use Src\Base\Deactivate;
 
-  public $plugin;
-
-  function __construct() {
-    $this->plugin = plugin_basename( __FILE__ );
-  }
-
-  function register() {
-    add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ));
-
-    add_action( 'admin_menu', array( $this, 'add_sidebar' ) );
-
-    add_filter( "plugin_action_links_$this->plugin", array( $this, 'settings_link' ) );
-  }
-
-  function settings_link( $links ) {
-    $settings_link = '<a href="admin.php?page=woo_order_tracker">Settings</a>';
-    array_push( $links, $settings_link );
-    return $links;
-  }
-
-  function add_sidebar() {
-    add_menu_page(
-      'Woo Order Tracker',
-      'Woo Order Tracker',
-      'manage_options',
-      'woo_order_tracker',
-      array( $this, 'index' ),
-      'dashicons-airplane',
-      110
-    );
-  }
-
-  function index() {
-    require_once plugin_dir_path( __FILE__ ) . 'templates/index.php';
-  }
-
-  function enqueue() {
-    wp_enqueue_style( 'style', plugins_url( '/assets/style.css', __FILE__ ) );
-    wp_enqueue_script( 'script', plugins_url( 'assets/script.js', __FILE__ ) );
-  }
+function activate() {
+  Activate::activate();
 }
 
-
-if ( class_exists( 'WooOrderTrackerPlugin' ) ) {
-  $wooOrderTrackingPlugin = new WooOrderTrackerPlugin();
-  $wooOrderTrackingPlugin->register();
+function deactivate() {
+  Deactivate::deactivate();
 }
-
 
 // activation
-register_activation_hook( __FILE__, array( Activate::class, 'activate' ) );
+register_activation_hook( __FILE__, 'activate' );
 
 // deactivation
-register_deactivation_hook( __FILE__, array( Deactivate::class, 'deactivate' ) );
+register_deactivation_hook( __FILE__, 'deactivate' );
+
+
+if ( class_exists( 'Src\Init' ) ) {
+  Src\Init::register_services();  
+}
