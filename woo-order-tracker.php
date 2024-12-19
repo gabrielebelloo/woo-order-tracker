@@ -39,14 +39,24 @@ if ( !defined( 'ABSPATH' ) ) {
 
 class WooOrderTrackerPlugin {
 
+  public $plugin;
+
   function __construct() {
-    add_action( 'init', array( $this, 'register_order_tracking_cpt' ) );
+    $this->plugin = plugin_basename( __FILE__ );
   }
 
   function register() {
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ));
 
     add_action( 'admin_menu', array( $this, 'add_sidebar' ) );
+
+    add_filter( "plugin_action_links_$this->plugin", array( $this, 'settings_link' ) );
+  }
+
+  function settings_link( $links ) {
+    $settings_link = '<a href="admin.php?page=woo_order_tracker">Settings</a>';
+    array_push( $links, $settings_link );
+    return $links;
   }
 
   function add_sidebar() {
@@ -63,10 +73,6 @@ class WooOrderTrackerPlugin {
 
   function index() {
     require_once plugin_dir_path( __FILE__ ) . 'templates/index.php';
-  }
-
-  function register_order_tracking_cpt() {
-    register_post_type( 'order_tracking', ['public' => true, 'label' => 'Order Trackings'] );
   }
 
   function enqueue() {
