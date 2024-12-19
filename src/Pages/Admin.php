@@ -14,7 +14,7 @@ class Admin extends BaseController {
 
   function add_admin_page() {
     add_menu_page(
-      'Woo Order Tracker',
+      'Woo Order Tracker Settings',
       'Woo Order Tracker',
       'manage_options',
       'woo_order_tracker',
