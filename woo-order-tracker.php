@@ -36,6 +36,12 @@ if ( !defined( 'ABSPATH' ) ) {
   die;
 }
 
+if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
+  require_once dirname( __FILE__ ) . '/vendor/autoload.php';
+}
+
+use Src\Activate;
+use Src\Deactivate;
 
 class WooOrderTrackerPlugin {
 
@@ -89,9 +95,7 @@ if ( class_exists( 'WooOrderTrackerPlugin' ) ) {
 
 
 // activation
-require_once plugin_dir_path( __FILE__ ) . 'inc/plugin-activate.php';
-register_activation_hook( __FILE__, array( 'PluginActivate', 'activate' ) );
+register_activation_hook( __FILE__, array( Activate::class, 'activate' ) );
 
 // deactivation
-require_once plugin_dir_path( __FILE__ ) . 'inc/plugin-deactivate.php';
-register_deactivation_hook( __FILE__, array( 'PluginDeactivate', 'deactivate' ) );
+register_deactivation_hook( __FILE__, array( Deactivate::class, 'deactivate' ) );

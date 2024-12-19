@@ -1,9 +1,10 @@
 <?php
 /**
  * @package WooOrderTracker
- */ 
+ */
+namespace Src;
 
-class PluginActivate {
+class Activate {
   public static function activate() {
     flush_rewrite_rules();
   }

@@ -2,8 +2,9 @@
 /**
  * @package WooOrderTracker
  */
+namespace Src;
 
-class PluginDeactivate {
+class Deactivate {
   public static function deactivate() {
     flush_rewrite_rules();
   }
