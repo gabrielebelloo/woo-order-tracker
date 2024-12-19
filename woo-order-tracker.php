@@ -40,26 +40,17 @@ if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
   require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 }
 
-define( 'PLUGIN', plugin_basename( __FILE__ ) );
-define( 'PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-
-use Src\Base\Activate;
-use Src\Base\Deactivate;
-
-function activate() {
-  Activate::activate();
+// plugin activation
+function activate_woo_plugin() {
+  Src\Base\Activate::activate();
 }
+register_activation_hook( __FILE__, 'activate_woo_plugin' );
 
-function deactivate() {
-  Deactivate::deactivate();
+// plugin deactivation
+function deactivate_woo_plugin() {
+  Src\Base\Deactivate::deactivate();
 }
-
-// activation
-register_activation_hook( __FILE__, 'activate' );
-
-// deactivation
-register_deactivation_hook( __FILE__, 'deactivate' );
+register_deactivation_hook( __FILE__, 'deactivate_woo_plugin' );
 
 
 if ( class_exists( 'Src\Init' ) ) {

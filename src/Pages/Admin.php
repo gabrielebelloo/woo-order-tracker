@@ -4,7 +4,9 @@
  */
 namespace Src\Pages;
 
-class Admin {
+use \Src\Base\BaseController;
+
+class Admin extends BaseController {
 
   public function register() {
     add_action( 'admin_menu', array( $this, 'add_admin_page' ) );
@@ -23,6 +25,6 @@ class Admin {
   }
 
   function index() {
-    require_once PLUGIN_PATH . 'templates/index.php';
+    require_once $this->plugin_path . 'templates/index.php';
   }
 }
