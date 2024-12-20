@@ -31,13 +31,13 @@ class Admin extends BaseController {
 
   public function add_custom_fields() {
     register_setting(
-      'woo_options_group',
-      'woo_options'
+      'woo_settings_group',
+      'woo_settings'
     );
 
     add_settings_section(
-      'woo_options_section',
-      'Order Tracking Options',
+      'woo_settings_section',
+      'Order Tracking Settings',
       '',
       'woo_order_tracker'
     );
@@ -47,7 +47,7 @@ class Admin extends BaseController {
       'Track orders',
       array( $this, 'order_tracking' ),
       'woo_order_tracker',
-      'woo_options_section',
+      'woo_settings_section',
       array(
         'label_for' => 'order_tracking',
         'class' => 'order_tracking_field'
@@ -59,7 +59,7 @@ class Admin extends BaseController {
       'Webhook Destination URL',
       array( $this, 'webhook_url' ),
       'woo_order_tracker',
-      'woo_options_section',
+      'woo_settings_section',
       array(
         'label_for' => 'webhook_url',
         'class' => 'webhook_url_field'
@@ -68,12 +68,14 @@ class Admin extends BaseController {
   }
 
   public function order_tracking() {
-    $value = esc_attr( get_option( 'order_tracking' ) );
-    echo '<input type="checkbox" name="woo_options[order_tracking]" value="1" ' . ( $value == 1 ? 'checked' : '' ) . '>';
+    $options = get_option( 'woo_settings' );
+    $value = isset($options['order_tracking']) ? $options['order_tracking'] : 0;
+    echo '<input type="checkbox" name="woo_settings[order_tracking]" value="1" ' . ( $value == 1 ? 'checked' : '' ) . '>';
   }
 
   public function webhook_url() { 
-    $value = esc_attr( get_option( 'webhook_url' ) );
-    echo '<input type="text" name="woo_options[webhook_url]" value="' . $value . '" placeholder="https://your-webhook-url.com">';
+    $options = get_option( 'woo_settings' );
+    $value = isset($options['webhook_url']) ? $options['webhook_url'] : '';
+    echo '<input type="text" name="woo_settings[webhook_url]" value="' . $value . '" placeholder="https://your-webhook-url.com">';
   }
 }
