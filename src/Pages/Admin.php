@@ -10,7 +10,8 @@ class Admin extends BaseController {
 
   public function register() {
     add_action( 'admin_menu', array( $this, 'add_admin_page' ) );
-    add_action( 'admin_init', array( $this, 'add_custom_fields' ) );
+    add_action( 'wp_ajax_save_settings', array( $this, 'save_settings' ) );
+    add_action( 'wp_ajax_nopriv_save_settings', array( $this, 'save_settings' ) );
   }
 
   public function add_admin_page() {
@@ -19,17 +20,39 @@ class Admin extends BaseController {
       'Woo Order Tracker',
       'manage_options',
       'woo_order_tracker',
-      array( $this, 'index' ),
+      array( $this, 'render_page' ),
       'dashicons-airplane',
       40
     );
   }
 
-  public function index() {
+  public function render_page() {
     require_once $this->plugin_path . 'templates/index.php';
   }
 
-  public function add_custom_fields() {
+  public function save_settings() { 
+    if ( ! check_ajax_referer( 'woo_order_tracker_nonce', 'nonce', false ) ) {
+      wp_send_json_error( array( 'message' => 'Invalid nonce' ), 400 );
+      return;
+    }
+
+    error_log( print_r( $_POST, true ) );
+
+    $order_tracking = isset( $_POST['order_tracking'] ) ? sanitize_text_field( wp_unslash( $_POST['order_tracking'] ) ) : '';
+    $webhook_url = isset( $_POST['webhook_url'] ) ? esc_url_raw( wp_unslash( $_POST['webhook_url'] ) ) : '';
+
+    error_log( 'order_tracking: ' . $order_tracking );
+    error_log( 'webhook_url: ' . $webhook_url );
+
+    update_option( 'woo_settings', array(
+      'order_tracking' => $order_tracking,
+      'webhook_url' => $webhook_url
+    ));
+
+    wp_send_json_success( array( 'message' => 'Settings saved.' ) );
+  }
+
+  /* public function add_custom_fields() {
     register_setting(
       'woo_settings_group',
       'woo_settings'
@@ -77,5 +100,5 @@ class Admin extends BaseController {
     $settings = get_option( 'woo_settings' );
     $value = isset( $settings['webhook_url'] ) ? $settings['webhook_url'] : '';
     echo '<input type="text" name="woo_settings[webhook_url]" value="' . $value . '" placeholder="https://your-webhook-url.com">';
-  }
+  } */
 }
