@@ -68,14 +68,14 @@ class Admin extends BaseController {
   }
 
   public function order_tracking() {
-    $options = get_option( 'woo_settings' );
-    $value = isset($options['order_tracking']) ? $options['order_tracking'] : 0;
+    $settings = get_option( 'woo_settings' );
+    $value = isset( $settings['order_tracking'] ) ? $settings['order_tracking'] : 0;
     echo '<input type="checkbox" name="woo_settings[order_tracking]" value="1" ' . ( $value == 1 ? 'checked' : '' ) . '>';
   }
 
   public function webhook_url() { 
-    $options = get_option( 'woo_settings' );
-    $value = isset($options['webhook_url']) ? $options['webhook_url'] : '';
+    $settings = get_option( 'woo_settings' );
+    $value = isset( $settings['webhook_url'] ) ? $settings['webhook_url'] : '';
     echo '<input type="text" name="woo_settings[webhook_url]" value="' . $value . '" placeholder="https://your-webhook-url.com">';
   }
 }
