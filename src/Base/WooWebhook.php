@@ -26,8 +26,6 @@ class WooWebhook {
 
     $settings = get_option( 'woo_settings' );
 
-    error_log( print_r( $settings, true ) );
-    
     if ( $settings['order_tracking'] === '1' && !$this->called_hooks ) {
       $webhook_url = $settings['webhook_url'];
 
