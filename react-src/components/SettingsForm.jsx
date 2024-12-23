@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 const SettingsForm = () => {
-  const [orderTracking, setOrderTracking] = useState(wooOrderTrackerSettings.order_tracking == 1);
+  const [orderTracking, setOrderTracking] = useState(wooOrderTrackerSettings.order_tracking);
   const [webhookUrl, setWebhookUrl] = useState(wooOrderTrackerSettings.webhook_url);
+
+  useEffect(() => {
+    console.log(wooOrderTrackerSettings);
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,20 +24,25 @@ const SettingsForm = () => {
         'Content-Type': 'application/x-www-form-urlencoded',
       }
     })
-    .then(response => console.log(response));
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
   }
 
   return <div>
     <h2>Woo Order Tracker Settings</h2>
 
     <form onSubmit={handleSubmit}>
-      <label>
-        <input type="checkbox" checked={orderTracking} onChange={(e) => setOrderTracking(e.target.checked ? 1 : 0)}/>
-        Enable order tracking
+      <label className='order-tracking'>  
+        <div>Enable tracking</div>
+        <select value={orderTracking} onChange={(e) => setOrderTracking(e.target.value)}>
+          <option value='1'>Actived</option>
+          <option value='0'>Deactivated</option>
+        </select>
       </label>
 
-      <label>
-        Webhook destination URL: 
+      <label className='webhook-url'>
+        <div>Webhook URL</div>
         <input type="text" value={webhookUrl} placeholder='https://your-webhook-url.com' onChange={(e) => setWebhookUrl(e.target.value)} />
       </label>
 
