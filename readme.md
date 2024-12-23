@@ -1,7 +1,7 @@
 # WooCommerce Order Tracker Plugin for WordPress
 
 ## Overview
-The **Woo Order Tracker Plugin** allows you to track orders and send updates to webhook URLs. This plugin lets you enable/disable order tracking and manage webhook URLs where order tracking data will be sent. It's a simple way to integrate order tracking with external systems or services.
+The **Woo Order Tracker Plugin** allows you to track orders and send updates to a webhook URL. This plugin lets you enable/disable order tracking and choose the webhook URL where order tracking data will be sent. It's a simple way to integrate order tracking with external systems or services.
 
 ## Features
 - Enable/disable order tracking.
