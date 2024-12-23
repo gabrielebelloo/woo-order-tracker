@@ -26,7 +26,9 @@ class WooWebhook {
 
     $settings = get_option( 'woo_settings' );
 
-    if ( isset( $settings['order_tracking'] ) && !$this->called_hooks ) {
+    error_log( print_r( $settings, true ) );
+    
+    if ( $settings['order_tracking'] === '1' && !$this->called_hooks ) {
       $webhook_url = $settings['webhook_url'];
 
       if ( $called_hook == 'woocommerce_order_note_added' ) {
