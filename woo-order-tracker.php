@@ -4,7 +4,7 @@
  */
 /*
 Plugin Name: Woo Order Tracker
-Plugin URI: https://github.com/gabrielebelloo
+Plugin URI: https://github.com/gabrielebelloo/woo-order-tracker
 Description: This is a plugin for Wordpress and WooCommerce capable of tracking orders.
 Version: 1.0.0
 Author: Gabriele Bello
