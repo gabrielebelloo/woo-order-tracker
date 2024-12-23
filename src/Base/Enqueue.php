@@ -15,6 +15,7 @@ class Enqueue extends BaseController {
   function enqueue() {
     wp_enqueue_script( 'wp-element' );
     wp_enqueue_script( 'woo-order-tracker-admin', $this->plugin_url . '/build/main.js', array( 'wp-element' ), null, true );
+    wp_enqueue_style( 'woo-order-tracker-admin', $this->plugin_url . '/build/main.css' );
 
     $settings = get_option( 'woo_settings' );
     $order_tracking = isset( $settings['order_tracking'] ) ? $settings['order_tracking'] : 0;
